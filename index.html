@@ -2,8 +2,16 @@
 <title>PE Quiz Hub</title><link rel="stylesheet" href="style.css"></head><body>
 <header class="hero"><div class="wrap"><p class="tag">Physical Education</p><h1>Review it.<br>Then test it.</h1>
 <p class="lead">Pick a lesson quiz. Each one has multiple choice, matching, identification, and enumeration.</p></div></header>
-<main class="wrap"><div id="list" class="cards"></div></main>
+<main class="wrap"><form class="who" id="who"><label for="name">Your name</label><div><input id="name" class="txt" maxlength="40" autocomplete="name" placeholder="Type your name to begin" required><button class="btn">Save name</button></div><p id="hint" class="hint">Your name goes on the leaderboard with your score.</p></form>
+<div id="list" class="cards"></div>
+<section id="board"><h2 class="bh">Leaderboard</h2><div id="lb" class="lb"></div></section></main>
 <footer class="wrap foot">Scores are not saved. Retake as many times as you want.</footer>
-<script src="data.js"></script>
-<script>document.getElementById('list').innerHTML=QUIZZES.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join('')</script>
+<script src="config.js"></script><script src="data.js"></script>
+<script>document.getElementById('list').innerHTML=QUIZZES.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join('')
+const nm=document.getElementById('name'),hint=document.getElementById('hint');nm.value=localStorage.getItem('pe_name')||'';
+document.getElementById('who').onsubmit=e=>{e.preventDefault();const v=nm.value.trim();if(v){localStorage.setItem('pe_name',v);hint.textContent='Saved. Hi, '+v+'! Pick a quiz.';hint.className='hint good'}};
+document.getElementById('list').onclick=e=>{if(e.target.closest('.card')&&!(localStorage.getItem('pe_name')||'').trim()){e.preventDefault();hint.textContent='Enter and save your name first.';hint.className='hint bad';nm.focus()}};
+QUIZZES.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';document.getElementById('lb').append(d);
+const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+(db.on()?'Could not load scores.':'Leaderboard is not set up yet.')+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'});
+</script>
 </body></html>
