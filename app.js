@@ -5,7 +5,7 @@ const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[
 let NAME=(localStorage.getItem("pe_name")||"").trim();
 document.title=Q.title+" | PE Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub;
 let done=false;
-function render(){done=false;$("#result").hidden=true;$("#submit").hidden=false;
+function render(){done=false;$("#result").hidden=true;$("#submit").hidden=false;$("#subhint").hidden=false;
 $("#quiz").innerHTML=J(Q.parts.map((p,pi)=>{p.order=shuf(p.items.map((_,i)=>i));
 let b=`<section class="part"><h2>Part ${R[pi]}. ${p.name}</h2><p class="ins">${p.ins}</p>`;
 if(p.t=="mcq")b+=J(p.items.map((it,i)=>`<div class="q" data-p="${pi}" data-i="${i}"><p class="qt"><b>${i+1}.</b> ${it.q}</p>${J(it.o.map((o,k)=>`<label class="opt"><input type="radio" name="m${pi}_${i}" value="${k}"><span class="l">${L[k]}</span>${o}</label>`))}<div class="fb"></div></div>`));
@@ -30,9 +30,9 @@ fb.textContent=show;q.classList.add(ok?"ok":"bad");return}
 if(ok)s++;q.classList.add(ok?"ok":"bad");fb.textContent=ok?"":show;
 q.querySelectorAll("input,select").forEach(e=>e.disabled=true)});
 document.querySelectorAll("input,select").forEach(e=>e.disabled=true);
-const pc=Math.round(s/t*100);$("#result").hidden=false;$("#submit").hidden=true;
-$("#result").innerHTML=`<p class="big">${s} / ${t}</p><p>${esc(NAME)}, ${pc}% &middot; ${pc>=90?"Excellent. You are ready.":pc>=75?"Good work. Review the items marked red.":pc>=50?"Getting there. Re-read the reviewer, then retake.":"Keep studying. Read the reviewer and try again."}</p><p id="save" class="sv">Saving your score...</p><div class="actions"><button class="btn" onclick="render();scrollTo(0,0)">Retake quiz</button><a class="btn ghost" href="index.html#board">Leaderboard</a></div>`;
-db.add(Q.id,{name:NAME,score:s,total:t}).then(e=>{const el=$("#save");el.textContent=e===""?"Score saved to the leaderboard.":"Not saved. "+db.hint(e);if(e!=="")el.style.color="#ffd966"});
+const pc=Math.round(s/t*100);$("#result").hidden=false;$("#submit").hidden=true;$("#subhint").hidden=true;
+$("#result").innerHTML=`<p class="big">${s} / ${t}</p><p>${esc(NAME)}, ${pc}% &middot; ${pc>=90?"Excellent. You are ready.":pc>=75?"Good work. Review the items marked red.":pc>=50?"Getting there. Re-read the reviewer, then retake.":"Keep studying. Read the reviewer and try again."}</p><p id="save" class="sv">Submitting to the leaderboard...</p><div class="actions"><button class="btn" onclick="render();scrollTo(0,0)">Retake quiz</button><a class="btn ghost" href="index.html#board">Leaderboard</a></div>`;
+db.add(Q.id,{name:NAME,score:s,total:t}).then(e=>{const el=$("#save");el.textContent=e===""?"Submitted. Your score is on the leaderboard.":"Not saved. "+db.hint(e);if(e!=="")el.style.color="#ffd966"});
 $("#result").scrollIntoView({behavior:"smooth"});scrollTo({top:0,behavior:"smooth"})}
 $("#submit").onclick=grade;
 const nm=$("#name");nm.value=NAME;nm.focus();
