@@ -2,7 +2,8 @@
 <title>Quiz | PE Quiz Hub</title><link rel="stylesheet" href="style.css"></head><body>
 <nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&larr; All quizzes</a><span id="prog">0 answered</span></div><div class="meter"><i id="fill"></i></div></nav>
 <header class="qhead"><div class="wrap"><h1 id="title"></h1><p class="lead" id="sub"></p></div></header>
-<main class="wrap"><div id="quiz"></div>
+<main class="wrap" id="gate"><form class="who gate" id="gf"><h2>Before you start</h2><label for="name">Your name</label><div><input id="name" class="txt" maxlength="40" required autocomplete="name" placeholder="Type your name"><button class="btn">Start quiz</button></div><p class="hint">Your name goes on the leaderboard with your score.</p></form></main>
+<main class="wrap" id="qbody" hidden><div id="quiz"></div>
 <div class="actions"><button id="submit" class="btn">Check my answers</button></div>
 <div id="result" class="result" hidden></div></main>
 <script src="config.js"></script><script src="data.js"></script><script src="app.js"></script></body></html>

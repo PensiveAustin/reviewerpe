@@ -53,3 +53,16 @@ h1,h2{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.08;marg
 .lbq ol{margin:0;padding-left:24px}.lbq li{padding:5px 0;border-bottom:1px solid var(--bg)}.lbq li span{display:inline-block;max-width:70%;vertical-align:bottom;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lbq li b{float:right;color:var(--g)}
 .sv{opacity:.85;margin:6px 0 0}
 @media(max-width:560px){.who div{flex-direction:column}}
+/* v3: matching = left/right layout, better mobile */
+.wrap{max-width:940px}
+.mt{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.mt>div{display:grid;gap:10px}.mt .q{margin:0}
+.row{grid-template-columns:minmax(0,1fr) 96px;gap:10px;align-items:center}
+.row select{min-height:46px;padding:10px 8px;text-align:center;font-weight:700}
+.defs{position:sticky;top:70px;margin:0}
+.defs::before{content:"Choices";font-weight:700;color:var(--g)}
+.opt{min-height:50px}
+@media(max-width:700px){.mt{grid-template-columns:1fr}.defs{position:static;order:-1}.row{grid-template-columns:minmax(0,1fr) 96px}}
+@media(max-width:560px){body{font-size:16px}.wrap{padding:0 14px}.q{padding:14px}.hero{padding:48px 0 42px}.qhead{padding:28px 0 24px}
+.part{margin:26px 0}.actions .btn{flex:1 1 100%;text-align:center}.card{padding:18px}.barin{font-size:.92rem}.big{font-size:2.8rem}.result{padding:22px}.en{grid-template-columns:1fr}}
+.gate{margin-top:32px}.gate h2{font-size:1.5rem;color:var(--g);margin-bottom:14px}

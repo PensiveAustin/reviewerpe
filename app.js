@@ -2,8 +2,8 @@ const $=s=>document.querySelector(s),J=a=>a.join(''),L="ABCDEFGH",R=["I","II","I
 const Q=QUIZZES.find(x=>x.id===new URLSearchParams(location.search).get('q'))||QUIZZES[0];
 const norm=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-const NAME=(localStorage.getItem("pe_name")||"").trim();if(!NAME)location.replace("index.html");
-document.title=Q.title+" | PE Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub+" Taking as: "+NAME;
+let NAME=(localStorage.getItem("pe_name")||"").trim();
+document.title=Q.title+" | PE Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub;
 let done=false;
 function render(){done=false;$("#result").hidden=true;$("#submit").hidden=false;
 $("#quiz").innerHTML=J(Q.parts.map((p,pi)=>{p.order=shuf(p.items.map((_,i)=>i));
@@ -32,6 +32,8 @@ q.querySelectorAll("input,select").forEach(e=>e.disabled=true)});
 document.querySelectorAll("input,select").forEach(e=>e.disabled=true);
 const pc=Math.round(s/t*100);$("#result").hidden=false;$("#submit").hidden=true;
 $("#result").innerHTML=`<p class="big">${s} / ${t}</p><p>${esc(NAME)}, ${pc}% &middot; ${pc>=90?"Excellent. You are ready.":pc>=75?"Good work. Review the items marked red.":pc>=50?"Getting there. Re-read the reviewer, then retake.":"Keep studying. Read the reviewer and try again."}</p><p id="save" class="sv">Saving your score...</p><div class="actions"><button class="btn" onclick="render();scrollTo(0,0)">Retake quiz</button><a class="btn ghost" href="index.html#board">Leaderboard</a></div>`;
-db.add({name:NAME,quiz_id:Q.id,score:s,total:t}).then(ok=>$("#save").textContent=ok?"Score saved to the leaderboard.":db.on()?"Could not save your score. Check your connection.":"Leaderboard is not set up yet.");
+db.add(Q.id,{name:NAME,score:s,total:t}).then(e=>{const el=$("#save");el.textContent=e===""?"Score saved to the leaderboard.":"Not saved. "+db.hint(e);if(e!=="")el.style.color="#ffd966"});
 $("#result").scrollIntoView({behavior:"smooth"});scrollTo({top:0,behavior:"smooth"})}
-$("#submit").onclick=grade;render();
+$("#submit").onclick=grade;
+const nm=$("#name");nm.value=NAME;nm.focus();
+$("#gf").onsubmit=e=>{e.preventDefault();NAME=nm.value.trim();if(!NAME)return;localStorage.setItem("pe_name",NAME);$("#gate").hidden=true;$("#qbody").hidden=false;$("#sub").textContent=Q.sub+" Taking as: "+NAME;render();scrollTo(0,0)};
