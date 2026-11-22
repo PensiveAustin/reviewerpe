@@ -1,6 +1,6 @@
 /* Paste your Supabase values here (see the setup guide). Leave empty to run without a leaderboard. */
-const SUPABASE_URL="";
-const SUPABASE_KEY="";
+const SUPABASE_URL="https://argaydshyzbaotirthff.supabase.co";
+const SUPABASE_KEY="sb_publishable_comq7U7_cg91vZER4eKJhA_ehwR0bvu";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
 const db={
  on:()=>!!(SUPABASE_URL&&SUPABASE_KEY),
