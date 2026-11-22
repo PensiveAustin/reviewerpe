@@ -1,5 +1,5 @@
 const QUIZZES=[
-{id:"pe1",title:"Physical Activity, Exercise & Physical Fitness",sub:"Definitions, health-related and skill-related fitness components",
+{id:"pe1",pdf:"reviewers/PE_Reviewer_Lesson_1.pdf",title:"Physical Activity, Exercise & Physical Fitness",sub:"Definitions, health-related and skill-related fitness components",
 parts:[
 {t:"mcq",name:"Multiple Choice",ins:"Choose the best answer.",items:[
 {q:"Any bodily movement produced by skeletal muscles that requires energy.",o:["Physical activity","Exercise","Physical fitness","Flexibility"],a:0},
@@ -27,7 +27,7 @@ parts:[
 {q:"The 5 health-related fitness components.",a:[["cardiovascular endurance","cardiorespiratory endurance"],["muscular strength"],["muscular endurance"],["flexibility"],["body composition"]]},
 {q:"The 6 skill-related fitness components.",a:[["agility"],["balance"],["coordination"],["power"],["reaction time"],["speed"]]},
 {q:"4 examples of physical activity.",a:[["walking"],["climbing stairs"],["dancing"],["cycling"]]}]}]},
-{id:"pe2",title:"Lesson 1: Fitness Concepts",sub:"Movement patterns, breathing and bracing, muscle contractions, principles of training",
+{id:"pe2",pdf:"reviewers/PE_Reviewer_Lesson_1_Fitness_Concepts.pdf",title:"Lesson 1: Fitness Concepts",sub:"Movement patterns, breathing and bracing, muscle contractions, principles of training",
 parts:[
 {t:"mcq",name:"Multiple Choice",ins:"Choose the best answer.",items:[
 {q:"Which is NOT one of the five components of physical fitness in the lesson?",o:["Body composition","Flexibility","Agility","Cardiorespiratory endurance"],a:2},

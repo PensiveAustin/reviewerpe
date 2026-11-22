@@ -1,12 +1,14 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PE Quiz Hub</title><link rel="stylesheet" href="style.css"></head><body>
 <header class="hero"><div class="wrap"><p class="tag">Physical Education</p><h1>Hello,<br>BSIT 1-2!</h1>
-<p class="lead">Review na tayo! Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
+<p class="lead">Review na tayo HAHAHAHHA. Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
 <main class="wrap"><div id="list" class="cards"></div>
+<section id="reviewers"><h2 class="bh">Reviewer PDFs</h2><p class="hint rh">Download the reviewer for your lesson, then take its quiz.</p><div id="rev" class="rev"></div></section>
 <section id="board"><h2 class="bh">Leaderboard</h2><div id="lb" class="lb"></div></section></main>
-<footer class="wrap foot">Scores are not saved. Retake as many times as you want.</footer>
+<footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
 <script src="config.js"></script><script src="data.js"></script>
 <script>document.getElementById('list').innerHTML=QUIZZES.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join('')
+document.getElementById('rev').innerHTML=QUIZZES.map(q=>`<div class="rv"><div><h3>${esc(q.title)}</h3><p class="hint">Reviewer for Quiz ${QUIZZES.indexOf(q)+1} &middot; PDF</p></div><a class="btn gold" href="${q.pdf}" download>Download reviewer</a></div>`).join('');
 QUIZZES.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';document.getElementById('lb').append(d);
 const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'});
 </script>

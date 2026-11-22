@@ -39,3 +39,5 @@ const nm=$("#name");nm.value=NAME;nm.focus();
 $("#gf").onsubmit=e=>{e.preventDefault();NAME=nm.value.trim();if(!NAME)return;localStorage.setItem("pe_name",NAME);$("#gate").hidden=true;$("#qbody").hidden=false;$("#sub").textContent=Q.sub+" Taking as: "+NAME;render();scrollTo(0,0)};
 
 document.querySelector(".back").onclick=e=>{if(!done&&ans>0&&!confirm("Leave this quiz? Your answers will be lost."))e.preventDefault()};
+
+if(Q.pdf)$("#gf").insertAdjacentHTML("beforeend",`<p class="hint"><a class="hl" href="${Q.pdf}" download>Download the reviewer PDF for this quiz</a></p>`);

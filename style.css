@@ -69,3 +69,8 @@ h1,h2{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.08;marg
 .sv{display:inline-block;background:rgba(255,255,255,.14);border-radius:99px;padding:6px 14px;font-weight:700;opacity:1}
 .back{background:var(--g);color:#fff!important;padding:7px 16px;border-radius:99px;font-size:.92rem;text-decoration:none}.back:hover{background:var(--g2)}.back:focus-visible{outline:3px solid var(--gold)}
 .hl{color:var(--g);font-weight:700}
+.rh{margin:-6px 0 14px}.rev{display:grid;gap:12px;margin-bottom:34px}
+.rv{display:flex;gap:16px;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid var(--line);border-left:6px solid var(--gold);border-radius:var(--r);padding:16px 20px}
+.rv h3{margin:0;font:700 1.1rem Figtree}.rv .hint{margin:2px 0 0}
+.btn.gold{background:var(--gold);color:var(--g2);white-space:nowrap}.btn.gold:hover{background:#dba500}
+@media(max-width:560px){.rv{flex-direction:column;align-items:stretch;text-align:left}.rv .btn{text-align:center}}
