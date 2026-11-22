@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PE Quiz Hub</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="hero"><div class="wrap"><p class="tag">Physical Education</p><h1>Review it.<br>Then test it.</h1>
+<p class="lead">Pick a lesson quiz. Each one has multiple choice, matching, identification, and enumeration.</p></div></header>
+<main class="wrap"><div id="list" class="cards"></div></main>
+<footer class="wrap foot">Scores are not saved. Retake as many times as you want.</footer>
+<script src="data.js"></script>
+<script>document.getElementById('list').innerHTML=QUIZZES.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join('')</script>
+</body></html>
