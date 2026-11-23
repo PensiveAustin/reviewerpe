@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz Hub</title><link rel="stylesheet" href="style.css"></head><body>
+<nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><span id="crumb"></span></div></nav>
+<header class="hero"><div class="wrap"><p class="tag" id="tag"></p><h1 id="h"></h1><p class="lead" id="lead">Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
+<main class="wrap"><div id="list" class="cards"></div>
+<section id="reviewers" hidden><h2 class="bh">Reviewers</h2><p class="hint rh">Download the reviewers for your lesson, then take its quiz.</p><div id="rev" class="rev"></div></section>
+<section id="board" hidden><h2 class="bh">Leaderboard</h2><div id="lb" class="lb"></div></section></main>
+<footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
+<script src="config.js"></script><script src="data.js"></script>
+<script>
+const S=SUBJECTS.find(x=>x.id===new URLSearchParams(location.search).get('s'))||SUBJECTS[0];
+const list=QUIZZES.filter(q=>q.subject===S.id);
+document.title=S.name+' Quiz | Quiz Hub';
+document.getElementById('tag').textContent=S.full;
+document.getElementById('h').textContent=S.name+' Quiz';
+document.getElementById('crumb').textContent=S.name;
+document.getElementById('list').innerHTML=list.length?list.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join(''):`<div class="empty"><h2>Coming soon</h2><p>${esc(S.name)} quizzes are not up yet. Check back later.</p></div>`;
+const withPdf=list.filter(q=>q.pdf||q.files);
+if(withPdf.length){document.getElementById('reviewers').hidden=false;
+const fl=q=>q.files||[{n:'Reviewer',k:'PDF',f:q.pdf}];
+document.getElementById('rev').innerHTML=withPdf.map(q=>fl(q).map((x,j)=>`<div class="rv"><div><h3>${esc(x.n)}</h3><p class="hint">${esc(q.title)} &middot; Quiz ${list.indexOf(q)+1} &middot; ${x.k}</p></div><a class="btn gold" href="${x.f}" download>Download ${x.k}</a></div>`).join('')).join('')}
+if(list.length){document.getElementById('board').hidden=false;
+list.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';document.getElementById('lb').append(d);
+const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'})}
+</script>
+</body></html>

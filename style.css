@@ -74,3 +74,34 @@ h1,h2{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.08;marg
 .rv h3{margin:0;font:700 1.1rem Figtree}.rv .hint{margin:2px 0 0}
 .btn.gold{background:var(--gold);color:var(--g2);white-space:nowrap}.btn.gold:hover{background:#dba500}
 @media(max-width:560px){.rv{flex-direction:column;align-items:stretch;text-align:left}.rv .btn{text-align:center}}
+/* v4: quiz hub home + subject page */
+.hero.hub{padding:84px 0 110px}
+.subjects{display:grid;gap:22px;grid-template-columns:repeat(2,minmax(0,1fr));margin:-60px 0 40px;position:relative}
+.sj{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:48px;min-height:340px;padding:34px;border-radius:24px;text-decoration:none;color:#fff;background:var(--g);border:2px solid var(--g);box-shadow:0 14px 34px rgba(15,77,56,.18);transition:transform .18s,box-shadow .18s}
+.sj::after{content:"";position:absolute;right:-70px;top:-70px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.09)}
+.sj.ensci{background:var(--gold);border-color:var(--gold);color:var(--g2);box-shadow:0 14px 34px rgba(242,183,5,.28)}
+.sj.ensci::after{background:rgba(15,77,56,.1)}
+.sj:hover,.sj:focus-visible{transform:translateY(-6px)}
+.sj:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+.sj .badge{display:grid;place-items:center;width:68px;height:68px;border-radius:20px;background:var(--gold);color:var(--g2);font:800 1.7rem 'Bricolage Grotesque'}
+.sj.ensci .badge{background:var(--g);color:#fff}
+.sj h2{font-size:clamp(2rem,4.4vw,2.8rem);font-weight:800}
+.sj p{margin:6px 0 0;font-size:1.1rem;opacity:.9}
+.sj .meta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.sj small{font-weight:700;font-size:.95rem;opacity:.9}
+.sj .open{background:#fff;color:var(--g);padding:12px 22px;border-radius:99px;font-weight:800;transition:transform .18s}
+.sj.ensci .open{background:var(--g);color:#fff}
+.sj:hover .open{transform:translateX(4px)}
+.empty{background:#fff;border:2px dashed var(--line);border-radius:var(--r);padding:34px;text-align:center}
+.empty h2{color:var(--g);font-size:1.6rem}.empty p{margin:8px 0 0;color:var(--mut)}
+#crumb{color:var(--mut)}
+@media(max-width:700px){.subjects{grid-template-columns:1fr;margin-top:-50px}.sj{min-height:260px;padding:26px;gap:34px}.hero.hub{padding:56px 0 84px}}
+
+.rvl{display:block;margin-top:22px;padding-top:18px;border-top:1.5px solid var(--line)}
+.rvl h3{margin:0 0 10px;font:700 1rem Figtree;color:var(--g)}
+.rvi{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:8px;background:#fff;border:1.5px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;text-decoration:none;color:inherit}
+.rvi:hover{border-color:var(--g);border-left-color:var(--gold)}
+.rk{flex:none;min-width:46px;text-align:center;padding:3px 8px;border-radius:6px;background:var(--g);color:#fff;font:700 .75rem Figtree;letter-spacing:.04em}
+.rn{flex:1;font-weight:600;line-height:1.3}
+.rd{flex:none;color:var(--g);font-weight:700;font-size:.9rem}
+@media(max-width:560px){.rvi{flex-wrap:wrap}.rd{width:100%}}

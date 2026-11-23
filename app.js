@@ -2,8 +2,10 @@ const $=s=>document.querySelector(s),J=a=>a.join(''),L="ABCDEFGH",R=["I","II","I
 const Q=QUIZZES.find(x=>x.id===new URLSearchParams(location.search).get('q'))||QUIZZES[0];
 const norm=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-let NAME=(localStorage.getItem("pe_name")||"").trim();
-document.title=Q.title+" | PE Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub;
+let NAME=(localStorage.getItem("quiz_name")||localStorage.getItem("pe_name")||"").trim();
+document.title=Q.title+" | Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub;
+const SUB=SUBJECTS.find(s=>s.id===Q.subject)||SUBJECTS[0],BACK="subject.html?s="+SUB.id;
+{const b=document.querySelector(".back");b.href=BACK;b.innerHTML="&#8962; "+esc(SUB.name);const h=document.querySelector("#gf .hl");h.href=BACK;h.innerHTML="&larr; Back to "+esc(SUB.name)}
 let done=false,ans=0;
 function render(){done=false;$("#result").hidden=true;$("#submit").hidden=false;$("#subhint").hidden=false;
 $("#quiz").innerHTML=J(Q.parts.map((p,pi)=>{p.order=shuf(p.items.map((_,i)=>i));
@@ -31,13 +33,13 @@ if(ok)s++;q.classList.add(ok?"ok":"bad");fb.textContent=ok?"":show;
 q.querySelectorAll("input,select").forEach(e=>e.disabled=true)});
 document.querySelectorAll("input,select").forEach(e=>e.disabled=true);
 const pc=Math.round(s/t*100);$("#result").hidden=false;$("#submit").hidden=true;$("#subhint").hidden=true;
-$("#result").innerHTML=`<p class="big">${s} / ${t}</p><p>${esc(NAME)}, ${pc}% &middot; ${pc>=90?"Excellent. You are ready.":pc>=75?"Good work. Review the items marked red.":pc>=50?"Getting there. Re-read the reviewer, then retake.":"Keep studying. Read the reviewer and try again."}</p><p id="save" class="sv">Submitting to the leaderboard...</p><div class="actions"><button class="btn" onclick="render();scrollTo(0,0)">Retake quiz</button><a class="btn ghost" href="index.html">Home</a><a class="btn ghost" href="index.html#board">Leaderboard</a></div>`;
+$("#result").innerHTML=`<p class="big">${s} / ${t}</p><p>${esc(NAME)}, ${pc}% &middot; ${pc>=90?"Excellent. You are ready.":pc>=75?"Good work. Review the items marked red.":pc>=50?"Getting there. Re-read the reviewer, then retake.":"Keep studying. Read the reviewer and try again."}</p><p id="save" class="sv">Submitting to the leaderboard...</p><div class="actions"><button class="btn" onclick="render();scrollTo(0,0)">Retake quiz</button><a class="btn ghost" href="${BACK}">All lessons</a><a class="btn ghost" href="index.html">Quiz Hub</a><a class="btn ghost" href="${BACK}#board">Leaderboard</a></div>`;
 db.add(Q.id,{name:NAME,score:s,total:t}).then(e=>{const el=$("#save");el.textContent=e===""?"Submitted. Your score is on the leaderboard.":"Not saved. "+db.hint(e);if(e!=="")el.style.color="#ffd966"});
 $("#result").scrollIntoView({behavior:"smooth"});scrollTo({top:0,behavior:"smooth"})}
 $("#submit").onclick=grade;
 const nm=$("#name");nm.value=NAME;nm.focus();
-$("#gf").onsubmit=e=>{e.preventDefault();NAME=nm.value.trim();if(!NAME)return;localStorage.setItem("pe_name",NAME);$("#gate").hidden=true;$("#qbody").hidden=false;$("#sub").textContent=Q.sub+" Taking as: "+NAME;render();scrollTo(0,0)};
+$("#gf").onsubmit=e=>{e.preventDefault();NAME=nm.value.trim();if(!NAME)return;localStorage.setItem("quiz_name",NAME);$("#gate").hidden=true;$("#qbody").hidden=false;$("#sub").textContent=Q.sub+" Taking as: "+NAME;render();scrollTo(0,0)};
 
 document.querySelector(".back").onclick=e=>{if(!done&&ans>0&&!confirm("Leave this quiz? Your answers will be lost."))e.preventDefault()};
 
-if(Q.pdf)$("#gf").insertAdjacentHTML("beforeend",`<p class="hint"><a class="hl" href="${Q.pdf}" download>Download the reviewer PDF for this quiz</a></p>`);
+{const fl=Q.files||(Q.pdf?[{n:"Reviewer",k:"PDF",f:Q.pdf}]:[]);if(fl.length)$("#gf").insertAdjacentHTML("beforeend",`<section class="rvl"><h3>Reviewers for this quiz</h3>${fl.map(x=>`<a class="rvi" href="${x.f}" download><span class="rk">${x.k}</span><span class="rn">${x.n.replace(/^Reviewer \d: /,"")}</span><span class="rd">Download</span></a>`).join("")}</section>`)}
