@@ -31,6 +31,7 @@ function go(a){
  document.body.appendChild(ov);
  var w=t.offsetWidth,th=t.offsetHeight,sc=Math.min(Math.min(vw*.84,560)/w,2.4);if(sc<1.15)sc=1.15;
  var tx=(vw-w*sc)/2-hr.left,ty=vh/2-th*sc/2-24-hr.top;
+ try{sessionStorage.setItem('splash',JSON.stringify({bg:cs.backgroundColor,fg:cs.color,t:h.textContent,fs:parseFloat(getComputedStyle(h).fontSize)*sc}))}catch(_){}
  bar.style.top=(vh/2+th*sc/2+10)+'px';ld.style.top=(vh/2+th*sc/2+44)+'px';
  void ov.offsetWidth;
  requestAnimationFrame(function(){ov.classList.add('go');t.style.transform='translate('+tx+'px,'+ty+'px) scale('+sc+')'});

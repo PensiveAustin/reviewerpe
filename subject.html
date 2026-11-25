@@ -1,5 +1,18 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head><body>
+<title>Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script>
+(function(){var d;try{d=JSON.parse(sessionStorage.getItem('splash')||'null');sessionStorage.removeItem('splash')}catch(_){}
+if(!d)return;
+var o=document.createElement('div');o.className='arrive';o.style.background=d.bg;o.style.color=d.fg;
+o.innerHTML='<h2 class="atitle"></h2><div class="abar"><i></i></div><div class="aload">Loading...</div>';
+var t=o.firstChild;t.textContent=d.t;t.style.fontSize=d.fs+'px';
+document.documentElement.appendChild(o);
+var ready=false,timer=false;
+function out(){if(ready&&timer){o.classList.add('out');setTimeout(function(){o.remove()},900)}}
+setTimeout(function(){timer=true;out()},350);
+addEventListener('load',function(){ready=true;out()});
+setTimeout(function(){ready=timer=true;out()},4000);
+})();
+</script></head><body>
 <nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><span id="crumb"></span></div></nav>
 <header class="hero"><div class="wrap"><p class="tag" id="tag"></p><h1 id="h"></h1><p class="lead" id="lead">Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
 <main class="wrap"><div id="list" class="cards"></div>
