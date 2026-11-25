@@ -88,7 +88,7 @@ parts:[
 {q:"The first 5 steps of the scientific method.",a:[["observation"],["question"],["hypothesis"],["prediction"],["test experiment","test","experiment","testing"]]},
 {q:"The 6 characteristics of science (nature of science).",a:[["empirical"],["testable"],["reproducible"],["peer reviewed","peer review"],["tentative but reliable","tentative"],["self correcting","selfcorrecting"]]},
 {q:"The 4 forms a scientific model can take.",a:[["diagrams","diagram"],["three dimensional objects","three dimensional object","3d objects","3d object","3 d objects"],["computer programs","computer program"],["mathematical equations","mathematical equation","equations","equation"]]}]}]},
-{id:"purcom1",subject:"purcom",pdf:"reviewers/PURCOM_Module_1.pdf",title:"Lesson 1: Communication Process",sub:"Nature of communication, Berlo's elements, levels, models, and verbal and non-verbal forms",
+{id:"purcom1",subject:"purcom",pdf:"reviewers/PURCOM_Lesson_1.pdf",title:"Lesson 1: Communication Process",sub:"Nature of communication, Berlo's elements, levels, models, and verbal and non-verbal forms",
 parts:[
 {t:"mcq",name:"Multiple Choice",ins:"Choose the best answer.",items:[
 {q:"The word communication comes from the Latin word 'communis', which means ____.",o:["Message","Common","Speak","Symbol"],a:1},
@@ -128,7 +128,7 @@ parts:[
 {q:"The 3 levels of communication.",a:[["intrapersonal","intrapersonal communication"],["interpersonal","interpersonal communication"],["mass","mass communication"]]},
 {q:"The 4 attributes of communication as a process.",a:[["dynamic"],["systematic"],["symbolic interaction"],["meaning is personally constructed","meaning personally constructed"]]},
 {q:"The 5 auditory forms of non-verbal communication.",a:[["silence"],["paralanguage"],["tactile"],["olfactory"],["gustatory"]]}]}]},
-{id:"purcom2",subject:"purcom",pdf:"reviewers/PURCOM_Module_1.pdf",title:"Lesson 2: Principles and Ethics of Communication",sub:"The 7 Cs of communication, communication ethics, and principles of ethical communication",
+{id:"purcom2",subject:"purcom",pdf:"reviewers/PURCOM_Lesson_2.pdf",title:"Lesson 2: Principles and Ethics of Communication",sub:"The 7 Cs of communication, communication ethics, and principles of ethical communication",
 parts:[
 {t:"mcq",name:"Multiple Choice",ins:"Choose the best answer.",items:[
 {q:"Which is NOT one of the 7 Cs of communication?",o:["Clear","Concrete","Creative","Courteous"],a:2},

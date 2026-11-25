@@ -18,7 +18,8 @@ document.getElementById('list').innerHTML=list.length?list.map((q,i)=>`<a class=
 const withPdf=list.filter(q=>q.pdf||q.files);
 if(withPdf.length){document.getElementById('reviewers').hidden=false;
 const fl=q=>q.files||[{n:'Reviewer',k:'PDF',f:q.pdf}];
-document.getElementById('rev').innerHTML=withPdf.map(q=>fl(q).map((x,j)=>`<div class="rv"><div><h3>${esc(x.n)}</h3><p class="hint">${esc(q.title)} &middot; Quiz ${list.indexOf(q)+1} &middot; ${x.k}</p></div><a class="btn gold" href="${x.f}" download>Download ${x.k}</a></div>`).join('')).join('')}
+{const seen={};withPdf.forEach(q=>fl(q).forEach(x=>{(seen[x.f]=seen[x.f]||{x,qs:[]}).qs.push(list.indexOf(q)+1)}));
+document.getElementById('rev').innerHTML=Object.values(seen).map(({x,qs})=>{const sh=qs.length>1;return `<div class=\"rv\"><div><h3>${esc(x.n)}${sh?' (all lessons)':''}</h3><p class=\"hint\">${sh?'Covers Quiz '+qs.join(' and Quiz '):esc(list[qs[0]-1].title)+' &middot; Quiz '+qs[0]} &middot; ${x.k}</p></div><a class=\"btn gold\" href=\"${x.f}\" download>Download ${x.k}</a></div>`}).join('')}}
 if(list.length){document.getElementById('board').hidden=false;
 list.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';document.getElementById('lb').append(d);
 const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'})}
