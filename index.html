@@ -10,4 +10,39 @@ document.getElementById('subjects').innerHTML=SUBJECTS.map(s=>{
 const qs=QUIZZES.filter(q=>q.subject===s.id),n=qs.reduce((t,q)=>t+countQ(q),0);
 return `<a class="sj ${s.id}" href="subject.html?s=${s.id}"><span class="badge">${s.badge}</span><div><h2>${esc(s.name)} Quiz</h2><p>${esc(s.full)}</p></div><div class="meta"><small>${qs.length?qs.length+' quizzes &middot; '+n+' items':'Coming soon'}</small><span class="open">Open &rarr;</span></div></a>`}).join('');
 </script>
+
+<script>
+(function(){
+var busy=false;
+function go(a){
+ if(busy)return;busy=true;
+ var cs=getComputedStyle(a),r=a.getBoundingClientRect(),h=a.querySelector('h2'),vw=innerWidth,vh=innerHeight;
+ var ov=document.createElement('div');ov.className='splash';
+ ov.style.cssText='background:'+cs.backgroundColor+';color:'+cs.color+';--t:'+r.top+'px;--l:'+r.left+'px;--r2:'+(vw-r.right)+'px;--b:'+(vh-r.bottom)+'px;--r:'+cs.borderRadius;
+ var g=a.cloneNode(true);g.className=a.className+' ghost';g.removeAttribute('href');
+ g.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;min-height:0;grid-column:auto';
+ ov.appendChild(g);
+ var t=document.createElement('h2');t.className='stitle';t.textContent=h.textContent;
+ var hr=h.getBoundingClientRect();t.style.left=hr.left+'px';t.style.top=hr.top+'px';
+ ov.appendChild(t);
+ var bar=document.createElement('div');bar.className='sbar';bar.innerHTML='<i></i>';
+ var ld=document.createElement('div');ld.className='sload';ld.textContent='Loading...';
+ ov.appendChild(bar);ov.appendChild(ld);
+ document.body.appendChild(ov);
+ var w=t.offsetWidth,th=t.offsetHeight,sc=Math.min(Math.min(vw*.84,560)/w,2.4);if(sc<1.15)sc=1.15;
+ var tx=(vw-w*sc)/2-hr.left,ty=vh/2-th*sc/2-24-hr.top;
+ bar.style.top=(vh/2+th*sc/2+10)+'px';ld.style.top=(vh/2+th*sc/2+44)+'px';
+ void ov.offsetWidth;
+ requestAnimationFrame(function(){ov.classList.add('go');t.style.transform='translate('+tx+'px,'+ty+'px) scale('+sc+')'});
+ var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ setTimeout(function(){location.href=a.href},reduce?50:1800);
+}
+document.getElementById('subjects').addEventListener('click',function(e){
+ var a=e.target.closest('a.sj');
+ if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+ e.preventDefault();go(a);
+});
+addEventListener('pageshow',function(e){if(e.persisted){busy=false;var o=document.querySelector('.splash');if(o)o.remove()}});
+})();
+</script>
 </body></html>
