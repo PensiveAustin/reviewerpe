@@ -197,15 +197,13 @@ p{margin:0}
 .splash.go .sload{opacity:.85}
 @media (prefers-reduced-motion:reduce){.splash,.splash *{transition-duration:.01s!important;transition-delay:0s!important}}
 
-/* ============ Splash arrival (ease out on the destination page) ============ */
-.arrive{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;
- pointer-events:all;transition:opacity .55s ease .05s,transform .7s cubic-bezier(.4,0,.2,1)}
-.arrive .atitle{margin:0 0 24px;white-space:nowrap;font-family:var(--px);font-weight:700;line-height:1.1;text-transform:uppercase;
- transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .45s ease}
-.arrive .abar{width:min(70vw,360px);height:20px;border:2px solid currentColor;border-radius:6px;padding:2px;transition:opacity .3s ease}
+/* ============ Splash arrival (matches splash end state pixel for pixel, then fades out) ============ */
+.arrive{position:fixed;inset:0;z-index:9999;pointer-events:all;transition:opacity .6s ease}
+.arrive .atitle{position:fixed;margin:0;white-space:nowrap;font-family:var(--px);font-weight:700;line-height:1.1;text-transform:uppercase;
+ transition:opacity .4s ease}
+.arrive .abar{position:fixed;left:50%;width:min(70vw,360px);height:20px;margin-left:calc(min(70vw,360px)/-2);border:2px solid currentColor;border-radius:6px;padding:2px;transition:opacity .3s ease}
 .arrive .abar i{display:block;height:100%;width:100%;background:currentColor;border-radius:2px}
-.arrive .aload{margin-top:14px;font:700 13px var(--px);letter-spacing:.12em;text-transform:uppercase;opacity:.85;transition:opacity .3s ease}
-.arrive.out{opacity:0;transform:translateY(-3%)}
-.arrive.out .atitle{transform:scale(.88);opacity:0}
-.arrive.out .abar,.arrive.out .aload{opacity:0}
+.arrive .aload{position:fixed;left:0;right:0;text-align:center;font:700 13px var(--px);letter-spacing:.12em;text-transform:uppercase;opacity:.85;transition:opacity .3s ease}
+.arrive.out{opacity:0}
+.arrive.out .atitle,.arrive.out .abar,.arrive.out .aload{opacity:0}
 @media (prefers-reduced-motion:reduce){.arrive,.arrive *{transition-duration:.01s!important;transition-delay:0s!important}}

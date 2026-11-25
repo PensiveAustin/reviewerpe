@@ -4,11 +4,11 @@
 if(!d)return;
 var o=document.createElement('div');o.className='arrive';o.style.background=d.bg;o.style.color=d.fg;
 o.innerHTML='<h2 class="atitle"></h2><div class="abar"><i></i></div><div class="aload">Loading...</div>';
-var t=o.firstChild;t.textContent=d.t;t.style.fontSize=d.fs+'px';
+var t=o.firstChild;t.textContent=d.t;t.style.fontSize=d.fs+'px';t.style.left=d.l+'px';t.style.top=d.tp+'px';o.children[1].style.top=d.bt+'px';o.children[2].style.top=d.lt+'px';
 document.documentElement.appendChild(o);
 var ready=false,timer=false;
 function out(){if(ready&&timer){o.classList.add('out');setTimeout(function(){o.remove()},900)}}
-setTimeout(function(){timer=true;out()},350);
+setTimeout(function(){timer=true;out()},120);
 addEventListener('load',function(){ready=true;out()});
 setTimeout(function(){ready=timer=true;out()},4000);
 })();
