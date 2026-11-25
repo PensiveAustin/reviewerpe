@@ -68,6 +68,9 @@ p{margin:0}
 .sj{display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:300px;padding:28px;border:2px solid var(--bd);border-radius:var(--r);box-shadow:6px 6px 0 var(--sh);text-decoration:none;
  background:var(--pri);color:#fff;transition:transform .1s,box-shadow .1s}
 .sj.ensci{background:var(--yel);color:var(--yel-ink)}
+.sj.purcom{background:#0E8F7E;color:#fff}
+.sj.purcom .badge{background:var(--yel);color:var(--yel-ink)}
+.sj:nth-child(3):last-child{grid-column:1/-1;min-height:220px}
 .sj:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--sh)}
 .sj:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--sh)}
 .sj .badge{display:grid;place-items:center;width:64px;height:64px;border:2px solid var(--bd);border-radius:10px;background:var(--yel);color:var(--yel-ink);font:700 24px var(--px);box-shadow:3px 3px 0 var(--sh)}
