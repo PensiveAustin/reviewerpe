@@ -208,16 +208,12 @@ p{margin:0}
 .arrive.out .atitle,.arrive.out .abar,.arrive.out .aload{opacity:0}
 @media (prefers-reduced-motion:reduce){.arrive,.arrive *{transition-duration:.01s!important;transition-delay:0s!important}}
 
-/* ============ Archived quizzes (subject page) ============ */
-.arch{margin:-6px 0 34px}
+/* ============ Archived quizzes ============ */
+.alink{margin:-8px 0 34px;text-decoration:none}
 .abtn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding:0 20px;cursor:pointer;
  background:var(--card);color:var(--ink);border:2px dashed var(--bd);border-radius:var(--r);font:700 17px Inter,system-ui,sans-serif;transition:background .15s,border-style .15s}
-.abtn:hover{background:var(--soft)}
+.abtn[hidden]{display:none}
+.abtn:hover{background:var(--soft);border-style:solid}
 .abtn b{color:var(--link)}
-.abtn .ac{display:inline-block;transition:transform .2s}
-.abtn.open{border-style:solid;background:var(--soft)}.abtn.open .ac{transform:rotate(180deg)}
-.ah{margin:14px 0 0}
-#alist.cards{margin:16px 0 0}
-#alist .go{background:var(--card);color:var(--ink)}
-#alist .num{background:var(--soft);color:var(--ink)}
-@media(prefers-reduced-motion:reduce){.abtn .ac{transition:none}}
+.sj.off{opacity:.45;filter:grayscale(.5);cursor:default;box-shadow:none}
+.sj.off:hover,.sj.off:active{transform:none;box-shadow:none}

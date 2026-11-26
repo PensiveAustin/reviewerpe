@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archived quizzes | Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script src="splash.js"></script></head><body>
+<nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><span id="crumb">Archived</span></div></nav>
+<header class="hero hub"><div class="wrap"><p class="tag">Archive</p><h1>Archived<br>quizzes</h1>
+<p class="lead">Finished quizzes live here. Pick a subject to retake one, grab its reviewer, or see its leaderboard.</p></div></header>
+<main class="wrap"><div id="subjects" class="subjects"></div></main>
+<footer class="wrap foot">Scores and reviewers here belong to each archived quiz. Retake as many times as you want.</footer>
+<script src="config.js"></script><script src="data.js"></script>
+<script>
+const el=document.getElementById('subjects');
+const plural=n=>n+(n===1?' quiz':' quizzes');
+function draw(arch){
+ const A=new Set(arch||[]);
+ if(!QUIZZES.some(q=>A.has(q.id))){el.innerHTML='<div class="empty" style="grid-column:1/-1"><h2>Nothing archived yet</h2><p>When a quiz is finished it moves here. <a class="hl" href="index.html">&larr; Back to Quiz Hub</a></p></div>';return}
+ el.innerHTML=SUBJECTS.map(s=>{
+  const qs=QUIZZES.filter(q=>q.subject===s.id&&A.has(q.id)),n=qs.reduce((t,q)=>t+countQ(q),0);
+  const inner=`<span class="badge">${s.badge}</span><div><h2>${esc(s.name)} Quiz</h2><p>${esc(s.full)}</p></div><div class="meta"><small>${qs.length?plural(qs.length)+' &middot; '+n+' items':'Nothing archived'}</small>${qs.length?'<span class="open">Open &rarr;</span>':''}</div>`;
+  return qs.length?`<a class="sj ${s.id}" href="subject.html?s=${s.id}&a=1">${inner}</a>`:`<div class="sj ${s.id} off">${inner}</div>`}).join('')}
+{const c=archive.cached();
+ if(c)draw(c);else el.innerHTML='<p class="hint">Loading archived quizzes...</p>';
+ archive.ids().then(a=>{
+  if(a===null){if(!c)el.innerHTML='<div class="empty" style="grid-column:1/-1"><h2>Could not load</h2><p>Check your internet and try again.</p></div>';return}
+  if(!c||[...a].sort().join()!==[...c].sort().join())draw(a)})}
+</script>
+</body></html>

@@ -2,13 +2,25 @@
 <title>Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script src="splash.js"></script></head><body>
 <header class="hero hub"><div class="wrap"><p class="tag">Quiz Hub</p><h1>Hello,<br>BSIT 1-2!</h1>
 <p class="lead">Review na tayo! Pick your subject to start.</p></div></header>
-<main class="wrap"><div id="subjects" class="subjects"></div></main>
+<main class="wrap"><div id="subjects" class="subjects"></div>
+<a id="alink" class="abtn alink" href="archive.html" hidden><span class="al">Archived quizzes <b id="acount"></b></span><span class="ac" aria-hidden="true">&rarr;</span></a></main>
 <footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
 <script src="config.js"></script><script src="data.js"></script>
 <script>
-document.getElementById('subjects').innerHTML=SUBJECTS.map(s=>{
-const qs=QUIZZES.filter(q=>q.subject===s.id),n=qs.reduce((t,q)=>t+countQ(q),0);
-return `<a class="sj ${s.id}" href="subject.html?s=${s.id}"><span class="badge">${s.badge}</span><div><h2>${esc(s.name)} Quiz</h2><p>${esc(s.full)}</p></div><div class="meta"><small>${qs.length?qs.length+' quizzes &middot; '+n+' items':'Coming soon'}</small><span class="open">Open &rarr;</span></div></a>`}).join('');
+const el=document.getElementById('subjects'),ab=document.getElementById('alink');
+const plural=n=>n+(n===1?' quiz':' quizzes');
+function draw(arch){
+ const A=new Set(arch||[]);
+ el.innerHTML=SUBJECTS.map(s=>{
+  const all=QUIZZES.filter(q=>q.subject===s.id),qs=all.filter(q=>!A.has(q.id)),n=qs.reduce((t,q)=>t+countQ(q),0);
+  const info=qs.length?plural(qs.length)+' &middot; '+n+' items':all.length?'No new quizzes':'Coming soon';
+  return `<a class="sj ${s.id}" href="subject.html?s=${s.id}"><span class="badge">${s.badge}</span><div><h2>${esc(s.name)} Quiz</h2><p>${esc(s.full)}</p></div><div class="meta"><small>${info}</small><span class="open">Open &rarr;</span></div></a>`}).join('');
+ const k=QUIZZES.filter(q=>A.has(q.id)).length;
+ document.getElementById('acount').textContent=k?'('+k+')':'';ab.hidden=!k}
+{const c=archive.cached();
+ draw(c||[]);
+ archive.ids().then(a=>{if(a===null)return;
+  if(!c||[...a].sort().join()!==[...c].sort().join())draw(a)})}
 </script>
 
 

@@ -3,41 +3,49 @@
 <nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><span id="crumb"></span></div></nav>
 <header class="hero"><div class="wrap"><p class="tag" id="tag"></p><h1 id="h"></h1><p class="lead" id="lead">Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
 <main class="wrap"><div id="list" class="cards"></div>
-<section id="arch" class="arch" hidden><button type="button" id="abtn" class="abtn" aria-expanded="false" aria-controls="apanel"><span class="al">Archived quizzes <b id="acount"></b></span><span class="ac" aria-hidden="true">&#9662;</span></button>
-<div id="apanel" hidden><p class="hint ah">Finished quizzes live here. Open one to take it again.</p><div id="alist" class="cards"></div></div></section>
 <section id="reviewers" hidden><h2 class="bh">Reviewers</h2><p class="hint rh">Download the reviewers for your lesson, then take its quiz.</p><div id="rev" class="rev"></div></section>
 <section id="board" hidden><h2 class="bh">Leaderboard</h2><div id="lb" class="lb"></div></section></main>
 <footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
 <script src="config.js"></script><script src="data.js"></script>
 <script>
-const S=SUBJECTS.find(x=>x.id===new URLSearchParams(location.search).get('s'))||SUBJECTS[0];
-const list=QUIZZES.filter(q=>q.subject===S.id);
-document.title=S.name+' Quiz | Quiz Hub';
-document.getElementById('tag').textContent=S.full;
-document.getElementById('h').textContent=S.name+' Quiz';
-document.getElementById('crumb').textContent=S.name;
-const card=(q,go)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${list.indexOf(q)+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">${go}</span></a>`;
-const lEl=document.getElementById('list'),aSec=document.getElementById('arch'),aBtn=document.getElementById('abtn'),aPan=document.getElementById('apanel');
-let aOpen=location.hash==='#archived';
-const setOpen=o=>{aOpen=o;aPan.hidden=!o;aBtn.setAttribute('aria-expanded',o);aBtn.classList.toggle('open',o)};
-aBtn.onclick=()=>setOpen(!aOpen);
+const P=new URLSearchParams(location.search),ARCH=P.get('a')==='1';
+const S=SUBJECTS.find(x=>x.id===P.get('s'))||SUBJECTS[0];
+const full=QUIZZES.filter(q=>q.subject===S.id);
+const $=id=>document.getElementById(id);
+document.title=(ARCH?'Archived ':'')+S.name+' Quiz | Quiz Hub';
+$('tag').textContent=ARCH?'Archived \u00b7 '+S.full:S.full;
+$('h').textContent=S.name+' Quiz';
+$('crumb').textContent=ARCH?S.name+' \u00b7 Archived':S.name;
+if(ARCH){const b=document.querySelector('.back');b.href='archive.html';b.innerHTML='&#8962; Archived quizzes';
+ $('lead').textContent='Finished quizzes. Take one again, grab its reviewer, or check its leaderboard.'}
+const qlink=q=>'quiz.html?q='+q.id+(ARCH?'&a=1':'');
+const card=(q,go)=>`<a class="card" href="${qlink(q)}"><span class="num">${full.indexOf(q)+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">${go}</span></a>`;
+const msg=(h,p,l)=>`<div class="empty"><h2>${h}</h2><p>${p}</p>${l?`<p><a class="hl" href="archive.html">${l}</a></p>`:''}</div>`;
+function reviewers(list){
+ const sec=$('reviewers'),el=$('rev'),wp=list.filter(q=>q.pdf||q.files);
+ sec.hidden=!wp.length;el.innerHTML='';if(!wp.length)return;
+ const fl=q=>q.files||[{n:'Reviewer',k:'PDF',f:q.pdf}],seen={};
+ wp.forEach(q=>fl(q).forEach(x=>{(seen[x.f]=seen[x.f]||{x,qs:[]}).qs.push(full.indexOf(q)+1)}));
+ el.innerHTML=Object.values(seen).map(({x,qs})=>{const sh=qs.length>1;return `<div class="rv"><div><h3>${esc(x.n)}${sh?' (all lessons)':''}</h3><p class="hint">${sh?'Covers Quiz '+qs.join(' and Quiz '):esc(full[qs[0]-1].title)+' &middot; Quiz '+qs[0]} &middot; ${x.k}</p></div><a class="btn gold" href="${x.f}" download>Download ${x.k}</a></div>`}).join('')}
+function board(list){
+ const sec=$('board'),lb=$('lb');lb.innerHTML='';sec.hidden=!list.length;
+ list.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';lb.append(d);
+  const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'})}
+let jumped=false;
 function draw(arch){
- const A=new Set(arch||[]),act=list.filter(q=>!A.has(q.id)),old=list.filter(q=>A.has(q.id));
- lEl.innerHTML=act.length?act.map(q=>card(q,'Start quiz')).join(''):old.length?`<div class="empty"><h2>No new quizzes right now</h2><p>Finished quizzes are under Archived quizzes below. Open one to take it again.</p></div>`:`<div class="empty"><h2>Coming soon</h2><p>${esc(S.name)} quizzes are not up yet. Check back later.</p></div>`;
- aSec.hidden=!old.length;document.getElementById('acount').textContent=old.length?'('+old.length+')':'';
- document.getElementById('alist').innerHTML=old.map(q=>card(q,'Take again')).join('');
- setOpen(aOpen&&old.length>0)}
+ const A=new Set(arch||[]),list=full.filter(q=>ARCH?A.has(q.id):!A.has(q.id)),hadArch=full.some(q=>A.has(q.id));
+ $('list').innerHTML=list.length?list.map(q=>card(q,ARCH?'Take again':'Start quiz')).join(''):
+  !full.length?msg('Coming soon',esc(S.name)+' quizzes are not up yet. Check back later.'):
+  ARCH?msg('Nothing archived here','No '+esc(S.name)+' quizzes are archived right now.','&larr; Back to archived quizzes'):
+  hadArch?msg('No new quizzes right now','Finished '+esc(S.name)+' quizzes are in the archive. Open one to take it again.','Open archived quizzes'):
+  msg('Coming soon',esc(S.name)+' quizzes are not up yet. Check back later.');
+ reviewers(list);board(list);
+ if(!jumped&&location.hash==='#board'&&list.length){jumped=true;$('board').scrollIntoView()}}
 {const c=archive.cached();
- if(c)draw(c);else if(list.length)lEl.innerHTML='<p class="hint">Loading quizzes...</p>';else draw([]);
- if(list.length)archive.ids().then(a=>{if(a===null){if(!c)draw([]);return}
-  if(!c||[...a].sort().join()!==[...c].sort().join())draw(a)})}
-const withPdf=list.filter(q=>q.pdf||q.files);
-if(withPdf.length){document.getElementById('reviewers').hidden=false;
-const fl=q=>q.files||[{n:'Reviewer',k:'PDF',f:q.pdf}];
-{const seen={};withPdf.forEach(q=>fl(q).forEach(x=>{(seen[x.f]=seen[x.f]||{x,qs:[]}).qs.push(list.indexOf(q)+1)}));
-document.getElementById('rev').innerHTML=Object.values(seen).map(({x,qs})=>{const sh=qs.length>1;return `<div class=\"rv\"><div><h3>${esc(x.n)}${sh?' (all lessons)':''}</h3><p class=\"hint\">${sh?'Covers Quiz '+qs.join(' and Quiz '):esc(list[qs[0]-1].title)+' &middot; Quiz '+qs[0]} &middot; ${x.k}</p></div><a class=\"btn gold\" href=\"${x.f}\" download>Download ${x.k}</a></div>`}).join('')}}
-if(list.length){document.getElementById('board').hidden=false;
-list.forEach(async q=>{const d=document.createElement('div');d.className='lbq';d.innerHTML='<h3>'+esc(q.title)+'</h3><p class="hint">Loading...</p>';document.getElementById('lb').append(d);
-const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'})}
+ if(c)draw(c);else if(full.length)$('list').innerHTML='<p class="hint">Loading quizzes...</p>';else draw([]);
+ if(full.length)archive.ids().then(a=>{
+  if(a===null){if(!c){if(ARCH)$('list').innerHTML=msg('Could not load','Check your internet and try again.');else draw([])}return}
+  if(!c||[...a].sort().join()!==[...c].sort().join())draw(a);
+  else if(!$('list').children.length)draw(a)})}
 </script>
 </body></html>

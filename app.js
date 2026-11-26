@@ -4,7 +4,7 @@ const norm=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').tri
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 let NAME=(localStorage.getItem("quiz_name")||localStorage.getItem("pe_name")||"").trim();
 document.title=Q.title+" | Quiz Hub";$("#title").textContent=Q.title;$("#sub").textContent=Q.sub;
-const SUB=SUBJECTS.find(s=>s.id===Q.subject)||SUBJECTS[0],BACK="subject.html?s="+SUB.id;
+const SUB=SUBJECTS.find(s=>s.id===Q.subject)||SUBJECTS[0],ARCH=new URLSearchParams(location.search).get("a")==="1",BACK="subject.html?s="+SUB.id+(ARCH?"&a=1":"");
 {const b=document.querySelector(".back");b.href=BACK;b.innerHTML="&#8962; "+esc(SUB.name);const h=document.querySelector("#gf .hl");h.href=BACK;h.innerHTML="&larr; Back to "+esc(SUB.name)}
 let done=false,ans=0;
 function render(){done=false;$("#result").hidden=true;$("#submit").hidden=false;$("#subhint").hidden=false;
