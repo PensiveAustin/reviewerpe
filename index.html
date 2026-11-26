@@ -1,15 +1,88 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script src="splash.js"></script></head><body>
-<header class="hero hub"><div class="wrap"><p class="tag">Quiz Hub</p><h1>Hello,<br>BSIT 1-2!</h1>
-<p class="lead">Review na tayo! Pick your subject to start.</p></div></header>
-<main class="wrap"><div id="subjects" class="subjects"></div></main>
-<footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
-<script src="config.js"></script><script src="data.js"></script>
-<script>
-document.getElementById('subjects').innerHTML=SUBJECTS.map(s=>{
-const qs=QUIZZES.filter(q=>q.subject===s.id),n=qs.reduce((t,q)=>t+countQ(q),0);
-return `<a class="sj ${s.id}" href="subject.html?s=${s.id}"><span class="badge">${s.badge}</span><div><h2>${esc(s.name)} Quiz</h2><p>${esc(s.full)}</p></div><div class="meta"><small>${qs.length?qs.length+' quizzes &middot; '+n+' items':'Coming soon'}</small><span class="open">Open &rarr;</span></div></a>`}).join('');
-</script>
-
-
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BSIT 1-2 Class Website</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("intro")</script>
+</head>
+<body>
+<div id="splash" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 6 2 7 2 7H4s2-1 2-7zM10 20h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="top-in">
+<a class="brand" href="#home" aria-label="BSIT 1-2 Class Website, go home"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect width="16" height="16" fill="#2F5BEA"/><g fill="#fff"><rect x="3" y="7" width="10" height="5"/><rect x="2" y="8" width="12" height="3"/><rect x="5" y="5" width="6" height="3"/><rect x="7" y="4" width="3" height="2"/></g><rect x="6" y="8" width="1" height="2" fill="#14213D"/><rect x="9" y="8" width="1" height="2" fill="#14213D"/></svg><span>BSIT 1-2 Class Website</span></a>
+<nav class="links" aria-label="Sections">
+<a class="nl" href="#home"><svg class="ic"><use href="#i-home"/></svg>Home</a><a class="nl" href="#announcements"><svg class="ic"><use href="#i-bell"/></svg>Announcements</a><a class="nl" href="#schedule"><svg class="ic"><use href="#i-clock"/></svg>Schedule</a><a class="nl" href="#calendar"><svg class="ic"><use href="#i-cal"/></svg>Activities</a><a class="nl" href="#reminders"><svg class="ic"><use href="#i-check"/></svg>Reminders</a></nav>
+<a class="qb" id="quiz" href="#home">Mock Quiz ↗</a></div></header>
+<nav class="tabs" aria-label="Sections">
+<a class="nl" href="#home"><svg class="ic"><use href="#i-home"/></svg>Home</a><a class="nl" href="#announcements"><svg class="ic"><use href="#i-bell"/></svg>Announcements</a><a class="nl" href="#schedule"><svg class="ic"><use href="#i-clock"/></svg>Schedule</a><a class="nl" href="#calendar"><svg class="ic"><use href="#i-cal"/></svg>Activities</a><a class="nl" href="#reminders"><svg class="ic"><use href="#i-check"/></svg>Reminders</a></nav>
+<main>
+<section class="view" id="home">
+<h1 class="sr">Welcome BSIT 1-2 Peeps. This is our section hub.</h1>
+<svg class="scene" id="scene" viewBox="0 0 320 120" shape-rendering="crispEdges" role="img" aria-label="Pixel cloud mascot typing: Welcome BSIT 1-2 Peeps. This is our section hub.">
+<rect width="320" height="30" fill="#BADAF6"/><rect y="30" width="320" height="30" fill="#CCE4F9"/><rect y="60" width="320" height="23" fill="#E0F0FC"/>
+<g fill="#fff" id="clouds"><rect x="20" y="8" width="34" height="5"/><rect x="25" y="5" width="22" height="4"/><rect x="150" y="17" width="40" height="5"/><rect x="156" y="14" width="26" height="4"/><rect x="262" y="9" width="30" height="5"/><rect x="267" y="6" width="18" height="4"/></g>
+<rect y="83" width="320" height="37" fill="#121C30"/><rect y="82" width="320" height="2" fill="#28405A"/><rect x="8" y="92" width="304" height="22" fill="#0E1626" stroke="#1E2C46"/>
+<rect x="14" y="10" width="192" height="76" fill="#46526A"/><rect x="17" y="13" width="186" height="70" fill="#16202F"/><rect x="17" y="13" width="186" height="11" fill="#1A2842"/>
+<circle cx="22" cy="19" r="2" fill="#FF5F56"/><circle cx="29" cy="19" r="2" fill="#FFBD2E"/><circle cx="36" cy="19" r="2" fill="#27C93F"/>
+<text x="44" y="22" font-family="Silkscreen,SilkLocal,monospace" font-size="7" fill="#BED2EB">bsit1-2@hub:~</text>
+<rect x="20" y="27" width="180" height="53" fill="#030814"/>
+<text x="24" y="35" font-family="Silkscreen,SilkLocal,monospace" font-size="6" fill="#50648A">BSIT_OS v1.2 // SECTION HUB</text>
+<text x="24" y="49" font-family="Silkscreen,SilkLocal,monospace" font-size="9" fill="#3CBEFF">&gt;</text>
+<text id="l1" x="34" y="49" font-family="Silkscreen,SilkLocal,monospace" font-size="9" fill="#fff"></text>
+<text id="l2" x="34" y="63" font-family="Silkscreen,SilkLocal,monospace" font-size="9" fill="#96CDFF"></text>
+<rect id="cur" x="34" y="41" width="5" height="9" fill="#3CBEFF"/>
+<text x="24" y="77" font-family="Silkscreen,SilkLocal,monospace" font-size="6" fill="#46607D">STATUS: 200 OK | ONLINE</text>
+<g id="mas"><rect x="236" y="18" width="30" height="8" fill="#16202F"/><rect x="226" y="26" width="50" height="50" fill="#16202F" stroke="#3C4B64" stroke-width="2"/>
+<g fill="#5AA0EB"><rect x="238" y="50" width="26" height="14"/><rect x="233" y="53" width="36" height="8"/><rect x="240" y="43" width="22" height="9"/><rect x="246" y="39" width="12" height="6"/></g><rect x="241" y="44" width="9" height="3" fill="#87C3FA"/>
+<rect id="e1" x="245" y="51" width="3" height="5" fill="#fff"/><rect id="e2" x="256" y="51" width="3" height="5" fill="#fff"/>
+<g fill="#5AA0EB"><rect x="234" y="62" width="4" height="22"/><rect x="262" y="62" width="4" height="22"/></g></g>
+<rect x="214" y="90" width="52" height="15" fill="#1E2A42"/><g id="keys"></g>
+<g id="hl" fill="#5AA0EB"><rect x="229" y="84" width="12" height="5"/><rect x="229" y="88" width="3" height="2"/><rect x="233" y="88" width="3" height="2"/><rect x="237" y="88" width="3" height="2"/></g>
+<g id="hr" fill="#5AA0EB"><rect x="259" y="84" width="12" height="5"/><rect x="259" y="88" width="3" height="2"/><rect x="263" y="88" width="3" height="2"/><rect x="267" y="88" width="3" height="2"/></g>
+<rect x="284" y="88" width="11" height="12" fill="#fff"/><rect x="295" y="91" width="3" height="6" fill="none" stroke="#fff"/><rect x="288" y="92" width="3" height="3" fill="#E63C5A"/>
+<rect x="300" y="98" width="6" height="12" fill="#1E2A42" stroke="#3C4B64"/>
+<rect x="188" y="98" width="16" height="16" fill="#FAEB82"/><g fill="#AA7D28"><rect x="191" y="101" width="10" height="1"/><rect x="191" y="105" width="10" height="1"/><rect x="191" y="109" width="10" height="1"/></g>
+</svg>
+<div class="cta"><p>Everything for our section, in one place.</p>
+<a class="bp" href="#announcements">See announcements <svg class="ic"><use href="#i-arrow"/></svg></a><a class="bs" href="#schedule">Class schedule</a></div>
+<div class="stats" id="stats" aria-label="At a glance"></div>
+<div class="grid">
+<section class="box"><div class="hd"><h2>Announcements</h2><a href="#announcements">View all →</a></div><div id="h-ann"></div></section>
+<section class="box"><div class="hd"><h2>Activities</h2><a href="#calendar">Activity calendar →</a></div><div id="h-ev"></div></section>
+<section class="box"><div class="hd"><h2>Reminders</h2><a href="#reminders">All reminders →</a></div><div id="h-rem"></div></section>
+</div></section>
+<section class="view" id="announcements"><p class="eyebrow">Section news</p><h1 class="pg">Announcements</h1><p class="mut">The latest from our class officers and instructors.</p>
+<div class="chips" id="chips"></div><div class="grid" id="ann"></div></section>
+<section class="view" id="schedule"><p class="eyebrow">Weekly classes</p><h1 class="pg">Class Schedule</h1><p class="mut">Our regular weekly schedule. Pick your lab group, it repeats every week automatically.</p>
+<div class="chips lab" id="labs" role="group" aria-label="Lab group"></div>
+<div id="cxn"></div>
+<div class="grid" style="margin-top:4px"><section class="box"><div class="hd"><button class="chip" id="sprev" aria-label="Previous month">◀</button><h2 id="smt" style="font-size:20px"></h2><button class="chip" id="snext" aria-label="Next month">▶</button></div><div class="cal" id="scal"></div><p class="mut" style="font-size:13px;margin-top:12px">The number on each date is how many classes you have that day.</p></section>
+<section class="box"><h2 id="sd-t" style="font-size:22px"></h2><div id="sd"></div></section></div>
+<div class="grid" style="margin-top:24px"><section class="box"><h2 style="font-size:22px">Whole week</h2><div id="sw"></div></section></div></section>
+<section class="view" id="calendar"><p class="eyebrow">Activities</p><h1 class="pg">Activity Calendar</h1><p class="mut">Events and deadlines, not regular classes. Tap a date to see what’s happening. Blue = activity, yellow = deadline.</p>
+<div class="grid" style="margin-top:24px"><section class="box"><div class="hd"><button class="chip" id="prev" aria-label="Previous month">◀</button><h2 id="mt"></h2><button class="chip" id="next" aria-label="Next month">▶</button></div><div class="cal" id="cal"></div></section>
+<section class="box"><h2 id="dt" style="font-size:22px"></h2><div id="de"></div></section></div></section>
+<section class="view" id="reminders"><p class="eyebrow">To-do</p><h1 class="pg">Reminders</h1><p class="mut">Tick things off as you finish them. Your ticks are saved on this device.</p>
+<div class="grid" style="margin-top:24px"><section class="box"><h2 style="font-size:22px">Due soon</h2><div id="r1"></div></section><section class="box"><h2 style="font-size:22px">Bring / prepare</h2><div id="r2"></div></section></div></section>
+</main>
+<footer class="mut">BSIT 1-2 · Our class hub</footer>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/data.js"></script>
+<script src="js/splash.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

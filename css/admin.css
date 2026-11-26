@@ -1,0 +1,31 @@
+:root{--err:#C92A2A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--err:#FF8787}}
+:root[data-theme="dark"]{--err:#FF8787}
+[hidden]{display:none!important}
+.narrow{max-width:440px;margin:32px auto}
+.fld{display:grid;gap:6px;margin-bottom:14px}
+.fld label{font-weight:600;font-size:14px}
+.fld input,.fld select,.fld textarea{width:100%;min-height:46px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:16px Inter,system-ui,sans-serif}
+.fld textarea{min-height:110px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--bd);box-shadow:3px 3px 0 var(--sh)}
+button.bp,button.bs{cursor:pointer;font:700 16px Inter,system-ui,sans-serif}
+button.bp:disabled{opacity:.6;cursor:wait}
+.sm{min-height:40px;padding:0 14px;font-size:14px!important}
+.danger{color:var(--err);border-color:var(--err)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;padding:14px 0;border-top:2px dashed var(--line)}
+.item>div:nth-child(2){min-width:0;flex:1 1 200px;overflow-wrap:anywhere}
+.item h3{font-size:17px;margin:6px 0 2px}
+.sm-t{font-size:14px}
+.err{color:var(--err);font-weight:600;min-height:1.4em;margin-top:10px}
+.sec{margin-top:22px;padding-top:18px;border-top:2px dashed var(--line)}
+@media (min-width:760px){#formbox{position:sticky;top:84px}}
+.danger:hover{background:var(--err);color:#fff}
+.narrow{margin:40px auto}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 0;border-top:2px dashed var(--line)}
+.pick{display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer}
+.pick input{appearance:none;-webkit-appearance:none;width:24px;height:24px;margin:0;flex:none;cursor:pointer;border:2px solid var(--bd);border-radius:6px;background:var(--card);box-shadow:2px 2px 0 var(--sh)}
+.item>.pick{padding-top:4px}
+.pick input:checked{background:var(--pri) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E") center/16px no-repeat}
+.pick input:indeterminate{background:var(--pri) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8h8' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E") center/16px no-repeat}
+.danger:disabled{opacity:.5;cursor:not-allowed}.danger:disabled:hover{background:var(--card);color:var(--err)}
