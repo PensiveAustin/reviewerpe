@@ -32,6 +32,16 @@ function go(a,mode){
   bg=cs.backgroundColor;fg=cs.color;title=h.textContent;rad=cs.borderRadius;hr=h.getBoundingClientRect();
   ghost=a.cloneNode(true);ghost.className=a.className+' ghost';ghost.removeAttribute('href');
   ghost.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;min-height:0;grid-column:auto';
+ }else if(mode==='archive'){
+  /* Archive entry: yellow "folder" splash so students know they are in the archive */
+  var rs=getComputedStyle(document.documentElement);
+  bg=rs.getPropertyValue('--yel').trim()||'#FFD43B';fg=rs.getPropertyValue('--yel-ink').trim()||'#14213D';
+  title='Archived Quizzes';rad='999px';
+ }else if(mode==='folder'){
+  /* Archive folder: expands from the folder body in the folder's own color, titled e.g. PATHFIT QUIZ 1 */
+  var fb=a.querySelector('.fb2')||a,fcs=getComputedStyle(fb);
+  r=fb.getBoundingClientRect();bg=fcs.backgroundColor;fg=getComputedStyle(a).color;
+  title=a.querySelector('h2').textContent;rad=fcs.borderRadius;
  }else{
   var bs=getComputedStyle(document.body);
   bg=bs.backgroundColor;fg=bs.color;title='Quiz Hub';rad='999px';
@@ -62,6 +72,8 @@ document.addEventListener('click',function(e){
  var a=e.target.closest&&e.target.closest('a');if(!a)return;
  var href=a.getAttribute('href')||'',mode=null;
  if(a.classList.contains('sj'))mode='card';
+ else if(a.classList.contains('fd'))mode='folder';
+ else if(/^archive\.html(#.*)?$/.test(href)&&!/\/archive\.html$/.test(location.pathname))mode='archive';
  else if(/^index\.html(#.*)?$/.test(href)&&!/\/(index\.html)?$/.test(location.pathname))mode='hub';
  if(!mode)return;
  e.preventDefault();go(a,mode);
