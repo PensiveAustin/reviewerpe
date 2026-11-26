@@ -1,51 +1,96 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Admin · BSIT 1-2 Class Website</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/admin.css">
-</head>
-<body>
-<header class="top"><div class="top-in">
-<a class="brand" href="admin.html"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect width="16" height="16" fill="#2F5BEA"/><g fill="#fff"><rect x="3" y="7" width="10" height="5"/><rect x="2" y="8" width="12" height="3"/><rect x="5" y="5" width="6" height="3"/><rect x="7" y="4" width="3" height="2"/></g><rect x="6" y="8" width="1" height="2" fill="#14213D"/><rect x="9" y="8" width="1" height="2" fill="#14213D"/></svg><span>BSIT 1-2 Admin</span></a>
-<a class="bs sm" href="index.html">View site</a>
-<button class="bs sm" id="out" type="button" hidden>Sign out</button>
-</div></header>
-<main>
-<section id="cfg" class="box narrow" hidden>
-<h1 class="pg">Not connected yet</h1>
-<p class="mut">Open <b>js/config.js</b> and paste your Supabase Project URL and publishable key, then reload this page.</p>
-</section>
+<title>Admin | Quiz Hub</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+<style>
+[hidden]{display:none!important}
+.narrow{max-width:440px;margin:36px auto}
+.box{background:var(--card);border:2px solid var(--bd);border-radius:var(--r);padding:22px;box-shadow:5px 5px 0 var(--sh)}
+.fld{display:grid;gap:6px;margin-bottom:14px}.fld label{font-weight:700;font-size:14px}
+.fld input{width:100%;min-height:46px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:16px Inter,system-ui,sans-serif}
+.fld input:focus{outline:0;border-color:var(--bd);box-shadow:3px 3px 0 var(--sh)}
+.err{color:var(--bad);font-weight:700;min-height:1.4em;margin-top:10px}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sm{min-height:40px;padding:0 16px;font-size:14px}
+.sub{margin:28px 0 12px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sub h2{font:700 clamp(16px,3vw,20px)/1.2 var(--px);text-transform:uppercase}
+.rowq{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--card);border:2px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;box-shadow:4px 4px 0 var(--sh)}
+.rowq.old{border-style:dashed;box-shadow:none;background:var(--soft)}
+.rowq h3{font-size:17px;margin:0 0 2px}.rowq p{margin:0;color:var(--mut);font-size:14px}
+.st{display:inline-block;margin-right:8px;padding:1px 9px;border:2px solid var(--bd);border-radius:6px;font:700 11px var(--px);text-transform:uppercase;background:var(--ok-bg);color:var(--ok-ink)}
+.rowq.old .st{background:var(--yel);color:var(--yel-ink)}
+.top{display:flex;gap:10px;align-items:center}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--act-bg);color:var(--act-ink);padding:12px 18px;border-radius:10px;border:2px solid var(--bd);font-weight:700;display:none;z-index:20}
+@media(max-width:560px){.rowq{grid-template-columns:auto 1fr}.rowq .btn{grid-column:1/-1;width:100%}}
+</style></head><body>
+<nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><div class="top"><span id="who" class="hint" style="margin:0" hidden></span><button class="btn ghost sm" id="out" type="button" hidden>Sign out</button></div></div></nav>
+<main class="wrap">
+<section id="cfg" class="box narrow" hidden><h2>Not connected yet</h2><p class="hint">Open <b>config.js</b> and paste your Supabase Project URL and publishable key, then reload.</p></section>
 
 <section id="login" class="box narrow" hidden>
-<p class="eyebrow">Officers only</p><h1 class="pg">Admin login</h1>
-<form id="lf" novalidate>
-<div class="fld"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
+<p class="tag">Officers only</p><h1 style="font:700 28px/1.1 var(--px);text-transform:uppercase;margin-bottom:18px">Admin login</h1>
+<form id="lf"><div class="fld"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
 <div class="fld"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
-<button class="bp" type="submit" id="lb">Log in</button>
-<p class="mut sm-t" style="margin:14px 0 10px;text-align:center">or</p>
-<button class="bs" type="button" id="gb" style="width:100%;justify-content:center">Continue with Google</button>
-<p class="err" id="lmsg" role="alert"></p>
-</form>
+<button class="btn" id="lb" type="submit">Log in</button><p class="err" id="lmsg" role="alert"></p></form>
 </section>
 
 <section id="dash" hidden>
-<p class="eyebrow">Admin</p><h1 class="pg">Manage content</h1>
-<p class="mut">Changes show up on the public site right away.</p>
-<div class="chips" id="tabs"></div>
-<div class="grid" id="pane"></div>
+<header class="hero" style="padding-bottom:0"><p class="tag">Admin</p><h1 style="font-size:clamp(26px,6vw,44px)">Archive quizzes</h1>
+<p class="lead">Archive a quiz when it is finished. It moves under <b>Archived quizzes</b> on its subject page, where students can still take it again. Changes show up right away.</p></header>
+<div id="subs"></div>
+<p class="hint" id="note" style="margin:6px 0 60px"></p>
 </section>
 </main>
 <div id="toast" role="status"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="js/config.js"></script>
-<script src="js/supa.js"></script>
-<script src="js/data.js"></script>
-<script src="js/admin.js"></script>
-</body>
-</html>
+<script src="config.js"></script><script src="data.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),KEY="qh_admin_session";
+const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",2600)};
+const show=id=>{["cfg","login","dash"].forEach(x=>$("#"+x).hidden=x!==id);$("#out").hidden=id!=="dash";if(id!=="dash")$("#who").hidden=true};
+if(!db.on()){show("cfg");return}
+
+/* ---- session (Supabase Auth over plain REST, no library needed) ---- */
+let S=null;try{S=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+const save=s=>{S=s;try{s?localStorage.setItem(KEY,JSON.stringify(s)):localStorage.removeItem(KEY)}catch(e){}};
+const auth=async(q,body)=>{const x=await fetch(SUPABASE_URL+"/auth/v1/"+q,{method:"POST",headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+ const j=await x.json().catch(()=>({}));if(!x.ok)throw new Error(j.error_description||j.msg||j.message||("Error "+x.status));return j};
+const toSession=j=>({a:j.access_token,r:j.refresh_token,email:(j.user&&j.user.email)||(S&&S.email)||""});
+async function refresh(){if(!S||!S.r)return false;try{save(toSession(await auth("token?grant_type=refresh_token",{refresh_token:S.r})));return true}catch(e){save(null);return false}}
+async function api(path,o={},retry=true){
+ const x=await fetch(SUPABASE_URL+"/rest/v1/"+path,{...o,headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+(S?S.a:SUPABASE_KEY),"Content-Type":"application/json",...(o.headers||{})}});
+ if(x.status===401&&retry&&await refresh())return api(path,o,false);return x}
+const isAdmin=async()=>{try{const x=await api("rpc/is_admin",{method:"POST",body:"{}"});return x.ok&&(await x.json())===true}catch(e){return false}};
+
+/* ---- archive state ---- */
+let A=new Set();
+const cache=()=>{try{localStorage.setItem(ARCH_KEY,JSON.stringify([...A]))}catch(e){}};
+function draw(){
+ $("#subs").innerHTML=SUBJECTS.map(s=>{const qs=QUIZZES.filter(q=>q.subject===s.id);
+  return `<div class="sub"><h2>${esc(s.name)}</h2><span class="hint" style="margin:0">${qs.filter(q=>A.has(q.id)).length} of ${qs.length} archived</span></div>`+
+  (qs.length?qs.map((q,i)=>{const o=A.has(q.id);
+   return `<div class="rowq${o?" old":""}"><span class="num">${i+1}</span><div><h3>${q.title}</h3><p><span class="st">${o?"Archived":"Active"}</span>${countQ(q)} items &middot; ${q.parts.length} parts</p></div><button class="btn ${o?"ghost":""} sm" data-id="${esc(q.id)}" data-on="${o?0:1}">${o?"Unarchive":"Archive"}</button></div>`}).join(""):`<p class="hint">No quizzes yet.</p>`)}).join("")}
+$("#subs").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-id]");if(!b)return;
+ const id=b.dataset.id,on=b.dataset.on==="1";b.disabled=true;
+ try{const x=on?await api("quiz_archive?on_conflict=quiz_id",{method:"POST",headers:{Prefer:"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify({quiz_id:id})})
+              :await api("quiz_archive?quiz_id=eq."+encodeURIComponent(id),{method:"DELETE"});
+  if(!x.ok){const j=await x.json().catch(()=>({}));
+   throw new Error(x.status===401||x.status===403||j.code==="42501"?"This account is not an admin. Run supabase-archive.sql with your email.":/PGRST205|42P01/.test(j.code||"")?"Table missing. Run supabase-archive.sql first.":(j.message||"Error "+x.status))}
+  on?A.add(id):A.delete(id);cache();toast(on?"Archived":"Unarchived")}
+ catch(err){toast(err.message||"Network error")}
+ draw()});
+
+async function open(){
+ if(!(await isAdmin())){const had=!!S;save(null);show("login");$("#lmsg").textContent=had?"That account is not an admin. Check supabase-archive.sql.":"";return}
+ $("#who").textContent=S.email;$("#who").hidden=false;
+ const a=await archive.ids();A=new Set(a||[]);
+ $("#note").textContent=a===null?"Could not load the archive list. Check that supabase-archive.sql was run.":"";
+ draw();show("dash");$("#who").hidden=false}
+$("#lf").onsubmit=async e=>{e.preventDefault();const m=$("#lmsg"),b=$("#lb");m.textContent="";b.disabled=true;
+ try{save(toSession(await auth("token?grant_type=password",{email:$("#em").value.trim(),password:$("#pw").value})));$("#pw").value="";await open()}
+ catch(err){m.textContent=/invalid/i.test(err.message)?"Wrong email or password.":err.message}
+ b.disabled=false};
+$("#out").onclick=()=>{save(null);A=new Set();show("login")};
+if(S)open();else show("login");
+})();
+</script></body></html>

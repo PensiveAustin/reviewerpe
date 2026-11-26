@@ -3,6 +3,8 @@
 <nav class="bar"><div class="wrap barin"><a href="index.html" class="back">&#8962; Quiz Hub</a><span id="crumb"></span></div></nav>
 <header class="hero"><div class="wrap"><p class="tag" id="tag"></p><h1 id="h"></h1><p class="lead" id="lead">Pick a lesson quiz below. You will enter your name after you choose.</p></div></header>
 <main class="wrap"><div id="list" class="cards"></div>
+<section id="arch" class="arch" hidden><button type="button" id="abtn" class="abtn" aria-expanded="false" aria-controls="apanel"><span class="al">Archived quizzes <b id="acount"></b></span><span class="ac" aria-hidden="true">&#9662;</span></button>
+<div id="apanel" hidden><p class="hint ah">Finished quizzes live here. Open one to take it again.</p><div id="alist" class="cards"></div></div></section>
 <section id="reviewers" hidden><h2 class="bh">Reviewers</h2><p class="hint rh">Download the reviewers for your lesson, then take its quiz.</p><div id="rev" class="rev"></div></section>
 <section id="board" hidden><h2 class="bh">Leaderboard</h2><div id="lb" class="lb"></div></section></main>
 <footer class="wrap foot">Your score is saved to the leaderboard when you submit. Retake as many times as you want.</footer>
@@ -14,7 +16,21 @@ document.title=S.name+' Quiz | Quiz Hub';
 document.getElementById('tag').textContent=S.full;
 document.getElementById('h').textContent=S.name+' Quiz';
 document.getElementById('crumb').textContent=S.name;
-document.getElementById('list').innerHTML=list.length?list.map((q,i)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${i+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">Start quiz</span></a>`).join(''):`<div class="empty"><h2>Coming soon</h2><p>${esc(S.name)} quizzes are not up yet. Check back later.</p></div>`;
+const card=(q,go)=>`<a class="card" href="quiz.html?q=${q.id}"><span class="num">${list.indexOf(q)+1}</span><div><h2>${q.title}</h2><p>${q.sub}</p><small>${countQ(q)} items &middot; ${q.parts.length} parts</small></div><span class="go">${go}</span></a>`;
+const lEl=document.getElementById('list'),aSec=document.getElementById('arch'),aBtn=document.getElementById('abtn'),aPan=document.getElementById('apanel');
+let aOpen=location.hash==='#archived';
+const setOpen=o=>{aOpen=o;aPan.hidden=!o;aBtn.setAttribute('aria-expanded',o);aBtn.classList.toggle('open',o)};
+aBtn.onclick=()=>setOpen(!aOpen);
+function draw(arch){
+ const A=new Set(arch||[]),act=list.filter(q=>!A.has(q.id)),old=list.filter(q=>A.has(q.id));
+ lEl.innerHTML=act.length?act.map(q=>card(q,'Start quiz')).join(''):old.length?`<div class="empty"><h2>No new quizzes right now</h2><p>Finished quizzes are under Archived quizzes below. Open one to take it again.</p></div>`:`<div class="empty"><h2>Coming soon</h2><p>${esc(S.name)} quizzes are not up yet. Check back later.</p></div>`;
+ aSec.hidden=!old.length;document.getElementById('acount').textContent=old.length?'('+old.length+')':'';
+ document.getElementById('alist').innerHTML=old.map(q=>card(q,'Take again')).join('');
+ setOpen(aOpen&&old.length>0)}
+{const c=archive.cached();
+ if(c)draw(c);else if(list.length)lEl.innerHTML='<p class="hint">Loading quizzes...</p>';else draw([]);
+ if(list.length)archive.ids().then(a=>{if(a===null){if(!c)draw([]);return}
+  if(!c||[...a].sort().join()!==[...c].sort().join())draw(a)})}
 const withPdf=list.filter(q=>q.pdf||q.files);
 if(withPdf.length){document.getElementById('reviewers').hidden=false;
 const fl=q=>q.files||[{n:'Reviewer',k:'PDF',f:q.pdf}];

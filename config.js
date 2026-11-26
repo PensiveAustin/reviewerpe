@@ -14,3 +14,19 @@ const db={
  async add(id,r){if(!db.on())return"off";try{const x=await fetch(SUPABASE_URL+"/rest/v1/scores_"+id,{method:"POST",headers:{...db.h(),Prefer:"return=minimal"},body:JSON.stringify(r)});return x.ok?"":await db.fail(x)}catch(e){db.err="network error";return db.err}},
  async top(id){if(!db.on())return null;try{const x=await fetch(SUPABASE_URL+"/rest/v1/scores_"+id+"?select=name,score,total&order=score.desc,created_at.asc&limit=10",{headers:db.h()});if(x.ok)return await x.json();await db.fail(x);return null}catch(e){db.err="network error";return null}}
 };
+
+/* ---- Archived quizzes ----
+   A row in quiz_archive = that quiz is archived. Students see archived quizzes under the "Archived quizzes"
+   button on each subject page; admin.html is where they get archived / unarchived. */
+const ARCH_KEY="quiz_archive_cache";
+const archive={
+ cached(){try{const a=JSON.parse(localStorage.getItem(ARCH_KEY)||"null");return Array.isArray(a)?a:null}catch(e){return null}},
+ async ids(){ // -> array of archived quiz ids, or null if it could not be loaded
+  if(!db.on())return null;
+  try{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),4000);
+   const x=await fetch(SUPABASE_URL+"/rest/v1/quiz_archive?select=quiz_id",{headers:db.h(),signal:ac.signal});clearTimeout(t);
+   if(!x.ok){await db.fail(x);return null}
+   const a=(await x.json()).map(r=>r.quiz_id);try{localStorage.setItem(ARCH_KEY,JSON.stringify(a))}catch(e){}return a}
+  catch(e){return null}}
+};
+
