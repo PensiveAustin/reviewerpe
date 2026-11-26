@@ -10,12 +10,12 @@
 <script>
 const P=new URLSearchParams(location.search),ARCH=P.get('a')==='1';
 const S=SUBJECTS.find(x=>x.id===P.get('s'))||SUBJECTS[0];
-const full=QUIZZES.filter(q=>q.subject===S.id);
+const full=QUIZZES.filter(q=>q.subject===S.id),R=ARCH?+P.get('r')||0:0,rd=q=>q.round||1,TT=S.name+' Quiz'+(R?' '+R:'');
 const $=id=>document.getElementById(id);
-document.title=(ARCH?'Archived ':'')+S.name+' Quiz | Quiz Hub';
+document.title=(ARCH?'Archived ':'')+TT+' | Quiz Hub';
 $('tag').textContent=ARCH?'Archived \u00b7 '+S.full:S.full;
-$('h').textContent=S.name+' Quiz';
-$('crumb').textContent=ARCH?S.name+' \u00b7 Archived':S.name;
+$('h').textContent=TT;
+$('crumb').textContent=ARCH?TT+' \u00b7 Archived':S.name;
 if(ARCH){const b=document.querySelector('.back');b.href='archive.html';b.innerHTML='&#8962; Archived quizzes';
  $('lead').textContent='Finished quizzes. Take one again, grab its reviewer, or check its leaderboard.'}
 const qlink=q=>'quiz.html?q='+q.id+(ARCH?'&a=1':'');
@@ -33,10 +33,10 @@ function board(list){
   const r=await db.top(q.id);d.querySelector('p').outerHTML=r===null?'<p class="hint">'+esc(db.hint())+'</p>':r.length?'<ol>'+r.map(x=>'<li><span>'+esc(x.name)+'</span><b>'+x.score+'/'+x.total+'</b></li>').join('')+'</ol>':'<p class="hint">No scores yet. Be the first.</p>'})}
 let jumped=false;
 function draw(arch){
- const A=new Set(arch||[]),list=full.filter(q=>ARCH?A.has(q.id):!A.has(q.id)),hadArch=full.some(q=>A.has(q.id));
+ const A=new Set(arch||[]),list=full.filter(q=>ARCH?A.has(q.id)&&(!R||rd(q)===R):!A.has(q.id)),hadArch=full.some(q=>A.has(q.id));
  $('list').innerHTML=list.length?list.map(q=>card(q,ARCH?'Take again':'Start quiz')).join(''):
   !full.length?msg('Coming soon',esc(S.name)+' quizzes are not up yet. Check back later.'):
-  ARCH?msg('Nothing archived here','No '+esc(S.name)+' quizzes are archived right now.','&larr; Back to archived quizzes'):
+  ARCH?msg('Nothing archived here','No '+esc(TT)+' quizzes are archived right now.','&larr; Back to archived quizzes'):
   hadArch?msg('No new quizzes right now','Finished '+esc(S.name)+' quizzes are in the archive. Open one to take it again.','Open archived quizzes'):
   msg('Coming soon',esc(S.name)+' quizzes are not up yet. Check back later.');
  reviewers(list);board(list);

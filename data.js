@@ -166,6 +166,10 @@ parts:[
 {q:"The 3 fundamentals of ethical communication.",a:[["responsible thinking"],["decision making"],["development of communication and communities","development of communication and community"]]},
 {q:"6 qualities your messages should have to be courteous.",a:[["friendly"],["professional"],["considerate"],["respectful"],["open"],["honest"]]},
 {q:"Two things communication ethics looks at: the balance between speaking and listening, and the degree of ____ and ____.",a:[["criticism"],["praise"]]}]}]}];
+/* ---- QUIZ ROUNDS (archive folders) ----
+Each archived quiz is filed in a folder named "<SUBJECT> QUIZ <round>". A quiz with no round field is round 1,
+so everything so far lives in PATHFIT QUIZ 1 / ENSCI QUIZ 1 / PURCOM QUIZ 1. For the next batch of quizzes,
+add round:2 to those quiz objects (e.g. {id:"pe3",subject:"pathfit",round:2,...}) and they get their own folder. */
 /* ---- ADDING ENSCI QUIZZES ----
 Copy a whole PE quiz object above ({id:"pe1",...}), paste it right before the closing "];" of QUIZZES,
 then change: id -> "ensci1" (then "ensci2"), subject -> "ensci", pdf, title, sub, and the questions.
