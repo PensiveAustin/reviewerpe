@@ -44,7 +44,7 @@ function go(a,mode){
   title=a.querySelector('h2').textContent;rad=fcs.borderRadius;
  }else{
   var bs=getComputedStyle(document.body);
-  bg=bs.backgroundColor;fg=bs.color;title='Quiz Hub';rad='999px';
+  bg=bs.backgroundColor;fg=bs.color;title=mode==='exit'?'BSIT Hub':'Quiz Hub';rad='999px';
  }
  var ov=document.createElement('div');ov.className='splash';
  ov.style.cssText='background:'+bg+';color:'+fg+';--t:'+r.top+'px;--l:'+r.left+'px;--r2:'+(vw-r.right)+'px;--b:'+(vh-r.bottom)+'px;--r:'+rad;
@@ -58,20 +58,23 @@ function go(a,mode){
  document.body.appendChild(ov);
  var w=t.offsetWidth,th=t.offsetHeight,sc=Math.min(Math.min(vw*.84,560)/w,2.4);if(sc<1.15)sc=1.15;
  var fs=parseFloat(getComputedStyle(t).fontSize)*sc,L=(vw-w*sc)/2,T=vh/2-th*sc/2-24,BT=vh/2+th*sc/2+10,LT=vh/2+th*sc/2+44;
- try{sessionStorage.setItem(KEY,JSON.stringify({bg:bg,fg:fg,t:title,fs:fs,l:L,tp:T,bt:BT,lt:LT}))}catch(_){}
+ if(mode!=='exit')try{sessionStorage.setItem(KEY,JSON.stringify({bg:bg,fg:fg,t:title,fs:fs,l:L,tp:T,bt:BT,lt:LT}))}catch(_){}
  bar.style.top=BT+'px';ld.style.top=LT+'px';
  var tr;
  if(hr){tr='translate('+(L-hr.left)+'px,'+(T-hr.top)+'px) scale('+sc+')'}
  else{t.style.left=L+'px';t.style.top=T+'px';t.style.opacity='0';t.style.transform='scale('+sc*.6+')';tr='scale('+sc+')'}
  void ov.offsetWidth;
  requestAnimationFrame(function(){ov.classList.add('go');t.style.transform=tr;t.style.opacity='1'});
- setTimeout(function(){location.href=a.href},reduce?50:1800);
+ var dest=a.href;
+ if(mode==='exit')dest+='#splash='+encodeURIComponent(JSON.stringify({fs:fs,l:L,tp:T,bt:BT,lt:LT,bg:bg,fg:fg,t:title}));
+ setTimeout(function(){location.href=dest},reduce?50:1800);
 }
 document.addEventListener('click',function(e){
  if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button)return;
  var a=e.target.closest&&e.target.closest('a');if(!a)return;
  var href=a.getAttribute('href')||'',mode=null;
- if(a.classList.contains('sj'))mode='card';
+ if(a.id==='hubback')mode='exit';
+ else if(a.classList.contains('sj'))mode='card';
  else if(a.classList.contains('fd'))mode='folder';
  else if(/^archive\.html(#.*)?$/.test(href)&&!/\/archive\.html$/.test(location.pathname))mode='archive';
  else if(/^index\.html(#.*)?$/.test(href)&&!/\/(index\.html)?$/.test(location.pathname))mode='hub';

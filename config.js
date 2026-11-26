@@ -1,3 +1,5 @@
+/* Where the "BSIT Hub" button on the Quiz Hub home page goes. Change this if your class hub lives at a different link. */
+const HUB_URL="https://bsit1-2hub.vercel.app";
 const SUPABASE_URL="https://argaydshyzbaotirthff.supabase.co";
 const SUPABASE_KEY="sb_publishable_comq7U7_cg91vZER4eKJhA_ehwR0bvu";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
