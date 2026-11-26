@@ -4,6 +4,11 @@ var KEY='splash',reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,bu
 
 /* ---------- arrival: matches the splash end state, then eases out ---------- */
 var d;try{d=JSON.parse(sessionStorage.getItem(KEY)||'null');sessionStorage.removeItem(KEY)}catch(_){}
+/* arriving from the class hub's Mock Quiz button: the hub put the splash layout in the URL hash */
+if(!d){try{var m=/^#splash=(.+)$/.exec(location.hash);
+ if(m){var h=JSON.parse(decodeURIComponent(m[1])),ok=['fs','l','tp','bt','lt'].every(function(k){return isFinite(h[k])});
+  if(ok)d={bg:'var(--bg)',fg:'var(--ink)',t:'Quiz Hub',fs:+h.fs,l:+h.l,tp:+h.tp,bt:+h.bt,lt:+h.lt};
+  history.replaceState(null,'',location.pathname+location.search)}}catch(_){}}
 if(d){
  var o=document.createElement('div');o.className='arrive';o.style.background=d.bg;o.style.color=d.fg;
  o.innerHTML='<h2 class="atitle"></h2><div class="abar"><i></i></div><div class="aload">Loading...</div>';
@@ -47,7 +52,7 @@ function go(a,mode){
  bar.style.top=BT+'px';ld.style.top=LT+'px';
  var tr;
  if(hr){tr='translate('+(L-hr.left)+'px,'+(T-hr.top)+'px) scale('+sc+')'}
- else{t.style.left=L+'px';t.style.top=T+'px';t.style.opacity='0';t.style.transformOrigin='0 50%';t.style.transform='scale('+sc*.6+')';tr='scale('+sc+')'}
+ else{t.style.left=L+'px';t.style.top=T+'px';t.style.opacity='0';t.style.transform='scale('+sc*.6+')';tr='scale('+sc+')'}
  void ov.offsetWidth;
  requestAnimationFrame(function(){ov.classList.add('go');t.style.transform=tr;t.style.opacity='1'});
  setTimeout(function(){location.href=a.href},reduce?50:1800);
