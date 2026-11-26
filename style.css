@@ -240,3 +240,13 @@ p{margin:0}
 .fd small{font-weight:700;font-size:14px}
 .fd .open{min-height:42px;display:inline-flex;align-items:center;padding:0 16px;border:2px solid var(--bd);border-radius:10px;background:var(--card);color:var(--ink);font-weight:800;box-shadow:3px 3px 0 var(--sh)}
 @media(prefers-reduced-motion:reduce){.fd{transition:none}}
+
+/* ---- Light / dark toggle button ---- */
+.tg{flex:none;width:44px;height:44px;display:inline-grid;place-items:center;padding:0;border:2px solid var(--bd);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--sh);transition:transform .1s,box-shadow .1s,background .15s}
+.tg:hover{background:var(--soft);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--sh)}
+.tg:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--sh)}
+.tg svg{width:22px;height:22px}
+@media(max-width:700px){.tg{width:42px;height:42px}}
+@media(max-width:420px){.tg{width:38px;height:38px}.tg svg{width:20px}}
+.barin>:nth-last-child(2){margin-left:auto}
+.barin>.tg{margin-left:12px}
